@@ -23,7 +23,7 @@ function renderTicker() {
     const loop = document.createElement("div");
     loop.className = "metrics-loop";
 
-    const repeated = Array.from({ length: 4 }, () => kpiData).flat();
+    const repeated = [...kpiData, ...kpiData, ...kpiData, ...kpiData];
     repeated.forEach((item, index) => {
       const node = document.createElement("div");
       node.className = "metrics-item";

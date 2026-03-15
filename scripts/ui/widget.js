@@ -17,7 +17,7 @@ function createDemoAnswer(question) {
   if (normalized.includes("texto") || normalized.includes("chat") || normalized.includes("whatsapp")) {
     return "El agente de texto usa la misma lógica conversacional y puede operar por web, WhatsApp o Telegram.";
   }
-  if (normalized.includes("voz") || normalized.includes("llamad")) {
+  if (normalized.includes("voz") || normalized.includes("llamada")) {
     return "El canal de voz conecta al agente con ElevenLabs para llamadas y seguimiento de campañas.";
   }
   return "Gracias por tu pregunta. Promise diseña agentes por flujo real y canal para automatizar tareas repetitivas.";
