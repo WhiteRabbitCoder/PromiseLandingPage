@@ -26,7 +26,7 @@ function renderTicker() {
     const loop = document.createElement("div");
     loop.className = "metrics-loop";
 
-    const repeated = Array(METRICS_TICKER_LOOPS).fill(kpiData).flat();
+    const repeated = Array.from({ length: METRICS_TICKER_LOOPS }, () => [...kpiData]).flat();
     repeated.forEach((item, index) => {
       const node = document.createElement("div");
       node.className = "metrics-item";

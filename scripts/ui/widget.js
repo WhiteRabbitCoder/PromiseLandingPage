@@ -227,7 +227,11 @@ export function initPromiseVoiceWidget(userConfig = {}) {
     try {
       if (liveSession?.sendText) {
         const response = await liveSession.sendText(content);
-        log.append(createMessage(response || "Recibí tu mensaje. Estoy procesando la respuesta del agente."));
+        const message =
+          typeof response === "string" && response.trim().length > 0
+            ? response
+            : "Recibí tu mensaje, pero el agente no devolvió texto en esta respuesta.";
+        log.append(createMessage(message));
       } else {
         log.append(createMessage(createDemoAnswer(content)));
       }
