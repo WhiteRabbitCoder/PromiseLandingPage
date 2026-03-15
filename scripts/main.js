@@ -46,14 +46,7 @@ function initThemeToggle() {
   if (!actionWrap) {
     actionWrap = document.createElement("div");
     actionWrap.className = "nav-actions";
-
-    const navLinks = navShell.querySelector("[data-nav-links]");
-    if (navLinks) {
-      navShell.insertBefore(actionWrap, navLinks);
-      actionWrap.append(navLinks);
-    } else {
-      navShell.append(actionWrap);
-    }
+    navShell.append(actionWrap);
   }
 
   const button = document.createElement("button");

@@ -152,7 +152,7 @@
   width: 8px;
   height: 8px;
   border-radius: 999px;
-  background: rgba(43, 14, 0, 0.34);
+  background: color-mix(in srgb, var(--color-text) 34%, transparent);
 }
 
 .problem-grid {
@@ -234,7 +234,11 @@
   overflow: hidden;
   min-height: 100%;
   padding: 1.3rem;
-  background: linear-gradient(155deg, rgba(58, 5, 8, 0.9), rgba(27, 1, 0, 0.9));
+  background: linear-gradient(
+    155deg,
+    color-mix(in srgb, var(--color-surface) 92%, transparent),
+    color-mix(in srgb, var(--color-bg) 90%, transparent)
+  );
   transition: filter 280ms ease, transform 280ms var(--ease-standard), box-shadow 280ms ease;
   cursor: pointer;
   isolation: isolate;
@@ -252,19 +256,34 @@
 }
 
 .agent-panel[data-agent-theme="voice"] {
-  background: linear-gradient(170deg, #2f0302, #52060b 60%, #2a0100);
+  background: linear-gradient(
+    170deg,
+    color-mix(in srgb, var(--color-bg) 92%, #000),
+    color-mix(in srgb, var(--color-bg-soft) 88%, #000) 60%,
+    color-mix(in srgb, var(--color-bg) 86%, #000)
+  );
   clip-path: polygon(0 0, 40% 0, 32% 100%, 0 100%);
   z-index: 3;
 }
 
 .agent-panel[data-agent-theme="modular"] {
-  background: linear-gradient(170deg, #feb800, #d09008 58%, #8b2e34);
+  background: linear-gradient(
+    170deg,
+    var(--color-accent),
+    color-mix(in srgb, var(--color-accent) 78%, #52060b) 58%,
+    var(--color-bridge)
+  );
   clip-path: polygon(40% 0, 72% 0, 64% 100%, 32% 100%);
   z-index: 2;
 }
 
 .agent-panel[data-agent-theme="text"] {
-  background: linear-gradient(170deg, #ffefeb, #ffe3dc 60%, #f2c9c0);
+  background: linear-gradient(
+    170deg,
+    color-mix(in srgb, var(--color-text) 95%, #fff),
+    color-mix(in srgb, var(--color-text) 88%, var(--color-accent)) 60%,
+    color-mix(in srgb, var(--color-text) 78%, var(--color-bridge))
+  );
   clip-path: polygon(72% 0, 100% 0, 100% 100%, 64% 100%);
   z-index: 1;
 }
@@ -383,7 +402,7 @@
   content: "";
   position: absolute;
   inset: 12% 14%;
-  background-image: radial-gradient(rgba(36, 2, 0, 0.68) 2px, transparent 2px);
+  background-image: radial-gradient(color-mix(in srgb, var(--color-text) 68%, transparent) 2px, transparent 2px);
   background-size: 14px 14px;
   animation: drift 6s linear infinite;
 }
@@ -397,8 +416,8 @@
   content: "";
   position: absolute;
   border-radius: 12px;
-  border: 1px solid rgba(36, 2, 0, 0.24);
-  background: rgba(82, 6, 11, 0.1);
+  border: 1px solid color-mix(in srgb, var(--color-text) 24%, transparent);
+  background: color-mix(in srgb, var(--color-bridge) 16%, transparent);
 }
 
 .ambient-chat::before {
@@ -433,7 +452,7 @@
   inset: 12% 8% auto;
   height: 220px;
   border-radius: 999px;
-  background: radial-gradient(circle, rgba(254, 184, 0, 0.24), transparent 70%);
+  background: radial-gradient(circle, color-mix(in srgb, var(--color-accent) 24%, transparent), transparent 70%);
   pointer-events: none;
 }
 
@@ -453,7 +472,7 @@
 
 .riwicall-card p {
   margin: 0.7rem 0 0;
-  color: rgba(247, 207, 198, 0.88);
+  color: color-mix(in srgb, var(--color-text) 84%, transparent);
   font-size: 0.92rem;
 }
 

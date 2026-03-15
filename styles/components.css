@@ -65,6 +65,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
+  margin-left: auto;
 }
 
 .theme-toggle {
@@ -225,10 +226,6 @@
 
   .nav-links.open {
     display: flex;
-  }
-
-  .nav-actions {
-    margin-left: auto;
   }
 
   .footer-shell {

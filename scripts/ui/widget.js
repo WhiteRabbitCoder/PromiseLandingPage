@@ -227,9 +227,7 @@ export function initPromiseVoiceWidget(userConfig = {}) {
     try {
       if (liveSession?.sendText) {
         const response = await liveSession.sendText(content);
-        if (response) {
-          log.append(createMessage(response));
-        }
+        log.append(createMessage(response || "Recibí tu mensaje. Estoy procesando la respuesta del agente."));
       } else {
         log.append(createMessage(createDemoAnswer(content)));
       }
