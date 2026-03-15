@@ -11,7 +11,7 @@ import {
 } from "../data.js";
 import { initAgentsExperience } from "../ui/agents.js";
 
-// Repetimos suficiente contenido para que cada loop cubra el viewport sin dejar huecos durante el desplazamiento.
+// Se repite el set de KPIs 4 veces por loop para asegurar ancho continuo en pantallas amplias y evitar huecos.
 const METRICS_TICKER_LOOPS = 4;
 
 function renderTicker() {
