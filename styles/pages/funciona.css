@@ -4,25 +4,59 @@
 }
 
 .flow-card {
-  padding: 1.1rem;
+  padding: 1.6rem 1.4rem;
+  position: relative;
+  background: var(--color-bg);
+  transition: background 300ms ease;
+}
+
+.flow-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--color-accent);
+  transition: width 400ms var(--ease-standard);
+}
+
+.flow-card:hover {
+  background: var(--color-bg-soft);
+}
+
+.flow-card:hover::before {
+  width: 44px;
 }
 
 .flow-card .index {
   margin: 0;
-  font-size: 2rem;
+  font-size: 2.8rem;
   font-family: var(--font-display);
-  color: rgba(255, 239, 235, 0.42);
+  font-weight: 800;
+  color: color-mix(in srgb, var(--color-text) 12%, transparent);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  transition: color 300ms ease;
+}
+
+.flow-card:hover .index {
+  color: color-mix(in srgb, var(--color-accent) 35%, transparent);
 }
 
 .flow-card h3 {
-  margin: 0.5rem 0 0;
-  font-size: 1rem;
+  margin: 0.8rem 0 0;
+  font-size: 1.05rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 .flow-card p {
-  margin: 0.45rem 0 0;
-  color: rgba(247, 207, 198, 0.84);
-  font-size: 0.9rem;
+  margin: 0.5rem 0 0;
+  color: color-mix(in srgb, var(--color-text) 50%, transparent);
+  font-size: 0.92rem;
+  line-height: 1.6;
 }
 
 .architecture-grid {
@@ -31,38 +65,56 @@
 }
 
 .architecture-card {
-  padding: 1.2rem;
+  padding: 1.6rem 1.4rem;
+  background: var(--color-bg);
+  transition: background 300ms ease;
+}
+
+.architecture-card:hover {
+  background: var(--color-bg-soft);
 }
 
 .architecture-card h3 {
   margin: 0;
-  font-size: 1rem;
+  font-size: 1.05rem;
+  font-family: var(--font-display);
+  font-weight: 700;
 }
 
 .architecture-card p {
   margin: 0.5rem 0 0;
-  color: rgba(247, 207, 198, 0.86);
-  font-size: 0.9rem;
+  color: color-mix(in srgb, var(--color-text) 50%, transparent);
+  font-size: 0.92rem;
+  line-height: 1.6;
 }
 
 .quality-grid {
-  margin-top: 1.8rem;
+  margin-top: 2rem;
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .quality-card {
-  padding: 1rem;
+  padding: 1.4rem 1.2rem;
+  background: var(--color-bg);
+  transition: background 300ms ease;
+}
+
+.quality-card:hover {
+  background: var(--color-bg-soft);
 }
 
 .quality-card h3 {
   margin: 0;
-  font-size: 0.98rem;
+  font-size: 1rem;
+  font-family: var(--font-display);
+  font-weight: 700;
 }
 
 .quality-card p {
   margin: 0.5rem 0 0;
-  color: rgba(247, 207, 198, 0.84);
-  font-size: 0.88rem;
+  color: color-mix(in srgb, var(--color-text) 50%, transparent);
+  font-size: 0.9rem;
+  line-height: 1.55;
 }
 
 @media (max-width: 1020px) {
@@ -80,6 +132,7 @@
 }
 
 @media (max-width: 720px) {
+
   .flow-grid,
   .quality-grid {
     grid-template-columns: 1fr;

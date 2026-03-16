@@ -3,171 +3,186 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Promise | Arquitectura híbrida para automatizar flujos repetitivos</title>
+    <title>Promise · More Human.</title>
     <meta
       name="description"
-      content="Promise crea agentes conversacionales a medida para automatizar procesos repetitivos. Producto actual: RiwiCall impulsado por SofIA."
-    />
+      content="Promise crea agentes conversacionales a medida para automatizar procesos repetitivos. Producto actual: RiwiCall impulsado por Sofía." />
     <link rel="stylesheet" href="./styles/main.css" />
     <link rel="stylesheet" href="./styles/pages/home.css" />
+    <script>
+      (function(){var t=localStorage.getItem("promise-theme");if(!t){t=window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light"}document.documentElement.dataset.theme=t})();
+    </script>
   </head>
   <body data-page="inicio">
     <header class="site-header">
       <div class="container nav-shell">
         <a class="brand-link" href="./index.html" aria-label="Promise inicio">
-          <img class="brand-logo" src="./assets/brand/LOGO-OSCURO.png" alt="Promise" />
+          <img class="brand-logo" src="./assets/brand/LOGO-OSCURO.png"
+            alt="Promise" />
         </a>
-        <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="main-menu">
-          Menú
+        <button class="nav-toggle" type="button" data-nav-toggle
+          aria-expanded="false" aria-controls="main-menu">
+          Menu
         </button>
         <ul id="main-menu" class="nav-links" data-nav-links>
           <li><a href="./index.html" data-nav-page="inicio">Inicio</a></li>
-          <li><a href="./como-funciona.html" data-nav-page="funciona">Cómo funciona</a></li>
+          <li><a href="./como-funciona.html" data-nav-page="funciona">Como
+              funciona</a></li>
           <li><a href="./precios.html" data-nav-page="precios">Precios</a></li>
-          <li><a href="./quienes-somos.html" data-nav-page="quienes">Quiénes somos</a></li>
+          <li><a href="./quienes-somos.html" data-nav-page="quienes">Quienes
+              somos</a></li>
           <li><a href="#contacto">Contacto</a></li>
         </ul>
       </div>
     </header>
 
     <main>
-      <section class="home-hero noise-overlay">
-        <div class="container home-hero-grid">
-          <div class="reveal in">
-            <p class="eyebrow">Promise · More Human.</p>
-            <h1>Si hay un flujo repetitivo,<em>Promise lo automatiza.</em></h1>
-            <p>
-              Diseñamos agentes conversacionales a medida para que los equipos dejen de gastar energía en tareas
-              mecánicas y vuelvan a enfocarse en decisiones humanas de valor.
-            </p>
-            <div class="hero-actions">
-              <a class="btn btn-primary" href="#agentes">Explorar agentes</a>
-              <a class="btn btn-secondary" href="./como-funciona.html">Ver implementación</a>
-            </div>
-          </div>
-          <aside class="hero-orb reveal">
-            <div class="pulse-grid" data-pulse-grid></div>
-            <img class="logo" src="./assets/brand/ISOLOGO-OSCURO.png" alt="Isologo Promise" />
-          </aside>
+      <!-- ── HERO ── -->
+      <section class="home-hero">
+        <div class="hero-bg-letter">P</div>
+        <p class="eyebrow">Promise · More Human.</p>
+        <h1>More<br><em>Human.</em></h1>
+        <p>
+          Agentes de inteligencia artificial disenados para que los equipos
+          dejen de hacer lo que los agota, y puedan enfocarse en lo que
+          realmente importa.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#contacto">Hablar con Promise</a>
+          <a class="btn btn-secondary" href="#problema">Conocer Sofía</a>
         </div>
+        <span class="scroll-hint">Scroll</span>
       </section>
 
-      <section class="metrics-ticker" aria-label="Métricas Promise">
+      <!-- ── TICKER ── -->
+      <section class="metrics-ticker" aria-label="Metricas Promise">
         <div class="metrics-track" data-metrics-track></div>
       </section>
 
-      <section class="section">
+      <!-- ── PROBLEMA / LAURA ── -->
+      <section id="problema" class="section">
         <div class="container problem-grid">
           <article class="reveal">
             <p class="eyebrow">El problema · caso Laura</p>
             <h2 class="problem-quote">
-              “Para llegar a las personas que importan, primero hay que pasar por <em>todas las demás.</em>”
+              "Para llegar a las personas que importan, primero hay que pasar
+              por <em>todas las demas.</em>"
             </h2>
           </article>
-          <article class="problem-story surface reveal">
+          <article class="problem-story reveal">
             <p>
-              Riwi recibe miles de aspirantes por cohorte y tiene una ventana corta para confirmar entrevistas o
-              exámenes. El equipo humano invertía tiempo valioso en intentos repetitivos con baja respuesta.
+              Laura trabaja en admisiones de una empresa de formacion. Cada dia
+              abre una lista de nombres y
+              empieza a marcar. La mayoria no contesta. Algunos no califican.
+              Unos pocos son exactamente a
+              quienes busca — pero para llegar a ellos, primero tiene que pasar
+              por todos los demas.
             </p>
             <p>
-              Promise nace para resolver ese patrón. SofIA ya opera en producción con RiwiCall, y hoy el foco es
-              escalar esa capacidad hacia un motor modular unificado.
+              Ese ciclo de esfuerzo sin retorno se repite en industrias enteras:
+              clinicas, bancos,
+              universidades, empresas de cobranza. En todos hay un proceso
+              masivo que hoy se ejecuta
+              manualmente porque nadie encontro una alternativa construida
+              exactamente para ese problema.
             </p>
-          </article>
-        </div>
-        <div class="container stats-grid card-grid" data-kpi-grid></div>
-      </section>
-
-      <section id="agentes" class="section">
-        <div class="container">
-          <p class="eyebrow">Centro de experiencia</p>
-          <h2 class="section-title reveal">Tres agentes, <em>una arquitectura.</em></h2>
-          <p class="section-copy reveal">
-            Pasa el mouse o haz clic sobre cada agente para abrir su vista expandida: capacidades, estado actual,
-            arquitectura, canales y métricas clave.
-          </p>
-
-          <div class="agents-experience">
-            <div class="agents-panels" data-agents-panels aria-label="Paneles de agentes inmersivos"></div>
-            <article class="agent-detail surface reveal" data-agent-detail aria-live="polite"></article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section riwicall-spotlight">
-        <div class="container">
-          <p class="eyebrow">RiwiCall · caso en producción</p>
-          <h2 class="section-title reveal">Así se presenta <em>RiwiCall</em> dentro del ecosistema Promise.</h2>
-          <p class="section-copy reveal">
-            RiwiCall es la implementación activa de SofIA para campañas de admisión de alto volumen: llamadas, contexto
-            y decisiones registradas en tiempo real.
-          </p>
-          <div class="riwicall-grid card-grid" data-riwicall-grid></div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="container">
-          <p class="eyebrow">Usos y expansión</p>
-          <h2 class="section-title reveal">
-            De admisiones a operaciones críticas: <em>cómo se usa Promise en la práctica.</em>
-          </h2>
-          <p class="section-copy reveal">
-            Cada implementación parte del flujo real, no de una plantilla. Por eso un mismo stack resuelve industrias
-            distintas sin perder precisión.
-          </p>
-          <div class="use-case-grid card-grid" data-use-cases></div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="container">
-          <p class="eyebrow">Metodología Promise</p>
-          <h2 class="section-title reveal">Implementación end-to-end en <em>4 etapas.</em></h2>
-          <div class="implementation-grid card-grid" data-implementation-grid></div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="container">
-          <p class="eyebrow">Integraciones actuales</p>
-          <h2 class="section-title reveal">Canales y piezas de operación <em>listas para producción.</em></h2>
-          <div class="integrations-grid card-grid" data-integrations-grid></div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="container">
-          <p class="eyebrow">Roadmap</p>
-          <h2 class="section-title reveal">Estado real de la plataforma <em>Promise.</em></h2>
-          <div class="roadmap-grid card-grid" data-roadmap-grid></div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="container">
-          <p class="eyebrow">Preguntas frecuentes</p>
-          <h2 class="section-title reveal">Lo esencial antes de <em>arrancar.</em></h2>
-          <div class="faq-list" data-faq-list></div>
-
-          <article id="contacto" class="cta-strip reveal">
-            <div>
-              <h3>Convirtamos tu operación repetitiva en un sistema inteligente.</h3>
-              <p>
-                CTA temporal: agenda una conversación de diagnóstico para mapear volumen, reglas y canal ideal del
-                agente.
-              </p>
+            <p><strong>Nosotros si la encontramos.</strong></p>
+            <div class="riwi-badge">
+              <div class="riwi-badge-dot"></div>
+              En produccion · Riwi · Medellin
             </div>
-            <a class="btn btn-secondary" href="#">Solicitar diagnóstico</a>
           </article>
+        </div>
+      </section>
+
+      <!-- ── NUMBERS / KPIs ── -->
+      <section class="stats-grid" data-kpi-grid></section>
+
+      <!-- ── AGENTS — DIAGONAL PANELS ── -->
+      <section id="agentes" class="agents-wrap">
+        <div class="agents-header">
+          <div>
+            <p class="section-tag eyebrow">Tres agentes · Una arquitectura</p>
+            <h2 class="agents-title">Los agentes<br><span>de
+                Promise.</span></h2>
+          </div>
+          <p class="agents-sub">
+            Cada agente con una estetica, un nivel de potencia y un canal
+            diferente. Una sola
+            arquitectura de fondo.
+          </p>
+        </div>
+        <div class="agents-stage" data-agents-stage></div>
+      </section>
+
+      <!-- ── HOW IT WORKS ── -->
+      <section class="implementation-section">
+        <div class="implementation-head reveal">
+          <div>
+            <p class="eyebrow">Proceso · Arquitectura</p>
+            <h2>Si hay un flujo repetitivo,<br><em>Promise lo
+                automatiza.</em></h2>
+          </div>
+          <p>
+            No ofrecemos una caja negra. Nos acercamos al cliente, entendemos su
+            flujo y construimos un
+            agente disenado exactamente para ese problema.
+          </p>
+        </div>
+        <div class="steps-grid" data-steps-grid></div>
+      </section>
+
+      <!-- ── MARKETS ── -->
+      <section class="markets">
+        <p class="eyebrow">Mas alla de Riwi · Expansion</p>
+        <h2 class="markets-title reveal">
+          El mismo agente que resuelve el problema de Laura puede operar en
+          <em>cualquier industria</em> con un flujo masivo repetitivo.
+        </h2>
+        <div class="market-pills" data-market-pills></div>
+      </section>
+
+      <!-- ── CTA / CONTACTO ── -->
+      <section id="contacto" class="section contact-section">
+        <div class="container">
+          <div class="contact-grid">
+            <div class="contact-cta">
+              <p class="eyebrow">Contacto</p>
+              <h2 class="section-title">Listo para devolverle<br>tiempo a <em>tu equipo?</em></h2>
+              <p class="contact-desc">Cuentanos sobre tu operacion y te mostramos como un agente de Promise puede ayudarte.</p>
+              <a class="btn btn-primary" href="#" data-open-widget>Hablar con Promi</a>
+              <p class="contact-note">Sin costo · Sin compromiso</p>
+            </div>
+            <form class="contact-form" data-contact-form>
+              <div class="form-field">
+                <label for="contact-name">Nombre</label>
+                <input type="text" id="contact-name" name="name" required placeholder="Tu nombre" />
+              </div>
+              <div class="form-field">
+                <label for="contact-email">Correo</label>
+                <input type="email" id="contact-email" name="email" required placeholder="tu@empresa.com" />
+              </div>
+              <div class="form-field">
+                <label for="contact-company">Empresa <span class="optional">(opcional)</span></label>
+                <input type="text" id="contact-company" name="company" placeholder="Nombre de tu empresa" />
+              </div>
+              <div class="form-field">
+                <label for="contact-message">Mensaje</label>
+                <textarea id="contact-message" name="message" rows="4" required placeholder="Cuentanos sobre tu flujo operativo..."></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Enviar mensaje</button>
+            </form>
+          </div>
         </div>
       </section>
     </main>
 
     <footer class="site-footer">
       <div class="container footer-shell">
-        <img class="brand-logo" src="./assets/brand/LOGO-OSCURO.png" alt="Promise" />
-        <p class="footer-copy">© <span data-current-year></span> Promise · Medellín, Colombia · Arquitectura híbrida</p>
+        <img class="brand-logo" src="./assets/brand/LOGO-OSCURO.png"
+          alt="Promise" />
+        <p class="footer-copy">© <span data-current-year></span> Promise ·
+          Medellin, Colombia</p>
         <p class="footer-tag">More Human.</p>
       </div>
     </footer>

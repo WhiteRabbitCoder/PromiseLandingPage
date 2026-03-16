@@ -11,12 +11,11 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  background: radial-gradient(circle at 12% 10%, color-mix(in srgb, var(--color-bridge) 26%, transparent), transparent 36%),
-    radial-gradient(circle at 88% 88%, color-mix(in srgb, var(--color-accent) 14%, transparent), transparent 40%),
-    var(--color-bg);
+  background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-body);
-  line-height: 1.55;
+  font-size: 1.12rem;
+  line-height: 1.6;
   overflow-x: hidden;
   transition: background 220ms ease, color 220ms ease;
 }
@@ -46,14 +45,14 @@ main {
 }
 
 .section {
-  padding-block: clamp(4rem, 8vw, 7rem);
+  padding-block: clamp(5rem, 10vw, 9rem);
 }
 
 .eyebrow {
   margin: 0 0 1rem;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  font-size: 0.72rem;
+  font-size: 0.82rem;
   font-weight: 600;
   color: var(--color-accent);
 }
@@ -64,7 +63,7 @@ main {
   font-weight: 800;
   line-height: 0.96;
   letter-spacing: -0.03em;
-  font-size: clamp(2rem, 5vw, 4.2rem);
+  font-size: clamp(2.4rem, 6vw, 5rem);
 }
 
 .section-title em {
@@ -74,41 +73,23 @@ main {
 
 .section-copy {
   margin: 1rem 0 0;
-  color: color-mix(in srgb, var(--color-text) 78%, transparent);
+  color: var(--color-text-soft);
   max-width: 70ch;
 }
 
 .surface {
-  border: 1px solid var(--color-outline);
-  background: linear-gradient(
-    160deg,
-    color-mix(in srgb, var(--color-surface) 90%, transparent),
-    color-mix(in srgb, var(--color-bg-soft) 84%, transparent)
-  );
-  border-radius: var(--radius-md);
-  box-shadow: 0 22px 70px -38px var(--color-shadow);
+  background: var(--color-bg);
 }
 
 .reveal {
   opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 700ms var(--ease-standard), transform 700ms var(--ease-standard);
+  transform: translateY(18px);
+  transition: opacity 650ms var(--ease-standard), transform 650ms var(--ease-standard);
 }
 
 .reveal.in {
   opacity: 1;
   transform: translateY(0);
-}
-
-.noise-overlay::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.05;
-  mix-blend-mode: soft-light;
-  background-image: radial-gradient(rgba(255, 239, 235, 0.22) 0.75px, transparent 0);
-  background-size: 3px 3px;
 }
 
 @media (max-width: 900px) {
@@ -118,6 +99,7 @@ main {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {

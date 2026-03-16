@@ -6,25 +6,31 @@
     <title>Quiénes somos | Promise</title>
     <meta
       name="description"
-      content="Promise: empresa emergente que construye agentes conversacionales a medida con enfoque IA con personas."
-    />
+      content="Promise: empresa emergente que construye agentes conversacionales a medida con enfoque IA con personas." />
     <link rel="stylesheet" href="./styles/main.css" />
     <link rel="stylesheet" href="./styles/pages/quienes.css" />
+    <script>
+      (function(){var t=localStorage.getItem("promise-theme");if(!t){t=window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light"}document.documentElement.dataset.theme=t})();
+    </script>
   </head>
   <body data-page="quienes">
     <header class="site-header">
       <div class="container nav-shell">
         <a class="brand-link" href="./index.html" aria-label="Promise inicio">
-          <img class="brand-logo" src="./assets/brand/LOGO-OSCURO.png" alt="Promise" />
+          <img class="brand-logo" src="./assets/brand/LOGO-OSCURO.png"
+            alt="Promise" />
         </a>
-        <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="main-menu">
-          Menú
+        <button class="nav-toggle" type="button" data-nav-toggle
+          aria-expanded="false" aria-controls="main-menu">
+          Menu
         </button>
         <ul id="main-menu" class="nav-links" data-nav-links>
           <li><a href="./index.html" data-nav-page="inicio">Inicio</a></li>
-          <li><a href="./como-funciona.html" data-nav-page="funciona">Cómo funciona</a></li>
+          <li><a href="./como-funciona.html" data-nav-page="funciona">Como
+              funciona</a></li>
           <li><a href="./precios.html" data-nav-page="precios">Precios</a></li>
-          <li><a href="./quienes-somos.html" data-nav-page="quienes">Quiénes somos</a></li>
+          <li><a href="./quienes-somos.html" data-nav-page="quienes">Quienes
+              somos</a></li>
           <li><a href="./index.html#contacto">Contacto</a></li>
         </ul>
       </div>
@@ -33,58 +39,109 @@
     <main>
       <section class="page-hero section">
         <div class="container title-wrap">
-          <p class="eyebrow">Quiénes somos</p>
-          <h1 class="section-title reveal">Construimos agentes con foco en <em>tiempo humano recuperado.</em></h1>
+          <p class="eyebrow">Quienes somos</p>
+          <h1 class="section-title reveal">Construimos agentes con foco en
+            <em>tiempo humano recuperado.</em></h1>
           <p class="reveal">
-            Promise no nace para reemplazar personas. Nace para quitarles tareas mecánicas repetitivas y devolverles
-            energía para conversaciones donde sí hacen diferencia.
+            Promise no nace para reemplazar personas. Nace para quitarles tareas
+            mecanicas repetitivas y devolverles
+            energia para conversaciones donde si hacen diferencia.
           </p>
         </div>
       </section>
 
+      <!-- ── VISION & MISION ── -->
       <section class="section">
-        <div class="container about-grid">
-          <article class="about-card surface reveal">
-            <h3>Propósito</h3>
-            <p>
-              Diseñar soluciones conversacionales a medida que conviertan flujos operativos repetitivos en sistemas
-              inteligentes, trazables y escalables.
-            </p>
-          </article>
-          <article class="about-card surface reveal">
-            <h3>Posicionamiento</h3>
-            <p>
-              Promise es empresa de arquitectura aplicada: diagnóstico + diseño conversacional + integración técnica + mejora
-              en producción.
-            </p>
-          </article>
+        <div class="container">
+          <div class="vm-grid">
+            <article class="vm-card reveal">
+              <h3 class="vm-label">Vision</h3>
+              <p class="vm-text">
+                Ser la plataforma de referencia en automatizacion conversacional
+                inteligente para Latinoamerica,
+                donde cada empresa pueda devolver a su equipo el tiempo que hoy
+                pierde en procesos repetitivos.
+              </p>
+            </article>
+            <article class="vm-card reveal">
+              <h3 class="vm-label">Mision</h3>
+              <p class="vm-text">
+                Disenar y desplegar agentes conversacionales a medida que
+                transformen flujos operativos repetitivos
+                en sistemas inteligentes, trazables y escalables — sin
+                reemplazar personas, potenciandolas.
+              </p>
+            </article>
+          </div>
         </div>
-        <div class="values-grid card-grid" data-values-grid></div>
       </section>
 
+      <!-- ── PROPOSITO & POSICIONAMIENTO ── -->
+      <section class="section">
+        <div class="container">
+          <p class="eyebrow">Identidad</p>
+          <h2 class="section-title reveal">Arquitectura aplicada <em>con
+              proposito.</em></h2>
+          <div class="identity-grid">
+            <article class="identity-card reveal">
+              <h3>Proposito</h3>
+              <p>
+                Disenar soluciones conversacionales a medida que conviertan
+                flujos operativos repetitivos en sistemas
+                inteligentes, trazables y escalables.
+              </p>
+            </article>
+            <article class="identity-card reveal">
+              <h3>Posicionamiento</h3>
+              <p>
+                Promise es empresa de arquitectura aplicada: diagnostico +
+                diseno conversacional + integracion tecnica + mejora
+                en produccion.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── VALORES ── -->
+      <section class="section">
+        <div class="container">
+          <p class="eyebrow">Principios</p>
+          <h2 class="section-title reveal">Lo que guia cada <em>decision
+              tecnica.</em></h2>
+          <div class="values-grid card-grid" data-values-grid></div>
+        </div>
+      </section>
+
+      <!-- ── EVIDENCIA ── -->
       <section class="section">
         <div class="container">
           <p class="eyebrow">Evidencia operativa</p>
-          <h2 class="section-title reveal">Validamos con datos reales, <em>no con promesas genéricas.</em></h2>
+          <h2 class="section-title reveal">Validamos con datos reales, <em>no
+              con promesas genericas.</em></h2>
           <div class="evidence-grid card-grid" data-evidence-grid></div>
 
-          <article class="team-strip surface reveal">
+          <article class="team-strip reveal">
             <div>
-              <h3 style="margin: 0">Equipo y célula</h3>
+              <h3 class="team-title">Equipo y celula</h3>
               <p>
-                Promise se construyó desde una célula de producto orientada a ejecución rápida, aprendizaje continuo y
-                decisiones técnicas documentadas.
+                Promise se construyo desde una celula de producto orientada a
+                ejecucion rapida, aprendizaje continuo y
+                decisiones tecnicas documentadas.
               </p>
             </div>
-            <img src="./assets/brand/PERFIL-OSCURO.png" alt="Perfil visual Promise" />
+            <img src="./assets/brand/PERFIL-OSCURO.png"
+              alt="Perfil visual Promise" />
           </article>
 
           <article class="cta-strip reveal">
             <div>
-              <h3>¿Quieres conocer al equipo detrás de la arquitectura?</h3>
-              <p>CTA temporal: agenda una sesión de descubrimiento para entender tu caso de uso y alcance inicial.</p>
+              <h3>Quieres conocer al equipo detras de la arquitectura?</h3>
+              <p>Agenda una sesion de descubrimiento para entender tu caso de
+                uso y alcance inicial.</p>
             </div>
-            <a class="btn btn-secondary" href="#">Hablar con Promise</a>
+            <a class="btn btn-secondary" href="./index.html#contacto">Hablar con
+              Promise</a>
           </article>
         </div>
       </section>
@@ -92,8 +149,10 @@
 
     <footer class="site-footer">
       <div class="container footer-shell">
-        <img class="brand-logo" src="./assets/brand/LOGO-OSCURO.png" alt="Promise" />
-        <p class="footer-copy">© <span data-current-year></span> Promise · Medellín, Colombia · Arquitectura híbrida</p>
+        <img class="brand-logo" src="./assets/brand/LOGO-OSCURO.png"
+          alt="Promise" />
+        <p class="footer-copy">© <span data-current-year></span> Promise ·
+          Medellin, Colombia</p>
         <p class="footer-tag">More Human.</p>
       </div>
     </footer>

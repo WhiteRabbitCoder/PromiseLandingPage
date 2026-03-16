@@ -180,7 +180,7 @@
 .widget-status {
   margin: 0;
   font-size: 0.7rem;
-  color: rgba(247, 207, 198, 0.72);
+  color: color-mix(in srgb, var(--color-text) 55%, transparent);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -457,40 +457,47 @@
   height: 232px;
   overflow: hidden;
   background: radial-gradient(ellipse at center, #2a0303 0%, #160101 65%, #0c0000 100%);
-}
-
-/* Canvas fills the entire stage */
-.voice-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-/* Caption overlays the canvas */
-.voice-overlay {
-  position: absolute;
-  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  pointer-events: none;
 }
 
-.voice-caption {
-  margin: 0;
-  font-size: 0.75rem;
-  text-align: center;
-  color: rgba(255, 239, 235, 0.78);
-  letter-spacing: 0.02em;
-  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.9);
-  padding: 0 1rem;
-  transition: color 300ms;
+/* Sound wave bars */
+.voice-bars {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
 }
 
-.promise-widget.agent-speaking .voice-caption {
-  color: rgba(255, 215, 100, 0.92);
+.voice-bar {
+  width: 4px;
+  border-radius: 99px;
+  background: rgba(254, 184, 0, 0.45);
+  transform-origin: center;
+  animation-name: bar-idle;
+  animation-duration: 2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+}
+
+.voice-bar:nth-child(1) { height: 20px; animation-delay: 0s; }
+.voice-bar:nth-child(2) { height: 32px; animation-delay: 0.2s; }
+.voice-bar:nth-child(3) { height: 44px; animation-delay: 0.4s; }
+.voice-bar:nth-child(4) { height: 32px; animation-delay: 0.6s; }
+.voice-bar:nth-child(5) { height: 20px; animation-delay: 0.8s; }
+
+.promise-widget.voice-listening .voice-bar {
+  background: rgba(254, 184, 0, 0.75);
+  animation-name: bar-listen;
+  animation-duration: 0.9s;
+}
+
+.promise-widget.agent-speaking .voice-bar {
+  background: #feb800;
+  animation-name: bar-speak;
+  animation-duration: 0.45s;
 }
 
 /* Voice footer */
@@ -576,6 +583,36 @@
     transform: scale(1.65);
     opacity: 0;
   }
+}
+
+@keyframes bar-idle {
+  0%, 100% { transform: scaleY(0.35); opacity: 0.28; }
+  50%       { transform: scaleY(0.65); opacity: 0.5; }
+}
+
+@keyframes bar-listen {
+  0%, 100% { transform: scaleY(0.45); }
+  50%       { transform: scaleY(1); }
+}
+
+@keyframes bar-speak {
+  0%, 100% { transform: scaleY(0.55); }
+  50%       { transform: scaleY(1); }
+}
+
+/* ── Light mode adjustments ── */
+:root[data-theme="light"] .widget-panel {
+  box-shadow:
+    0 28px 72px -32px rgba(36, 2, 0, 0.25),
+    0 8px 24px -12px rgba(36, 2, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+:root[data-theme="light"] .widget-toggle {
+  box-shadow:
+    0 0 0 0 rgba(254, 184, 0, 0.35),
+    0 10px 36px -10px rgba(254, 184, 0, 0.4),
+    0 4px 12px -4px rgba(36, 2, 0, 0.25);
 }
 
 /* ── Responsive ── */

@@ -30,12 +30,29 @@ function setFooterYear() {
   }
 }
 
+const LOGO_LIGHT = "./assets/brand/LOGO-OSCURO.png";  // dark logo for light bg
+const LOGO_DARK = "./assets/brand/LOGO-CLARO.png";   // light logo for dark bg
+
+function updateThemeAssets() {
+  const isDark = document.documentElement.dataset.theme === "dark";
+  const logoSrc = isDark ? LOGO_DARK : LOGO_LIGHT;
+  document.querySelectorAll(".brand-logo").forEach((img) => {
+    img.src = logoSrc;
+  });
+  // Update widget badge visual state
+  const widgetRoot = document.querySelector("[data-promise-widget-root]");
+  if (widgetRoot) {
+    widgetRoot.dataset.theme = isDark ? "dark" : "light";
+  }
+}
+
 function initThemeToggle() {
   const root = document.documentElement;
   const savedTheme = localStorage.getItem(THEME_KEY);
   const preferredDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
   const initialTheme = savedTheme || (preferredDark ? "dark" : "light");
   root.dataset.theme = initialTheme;
+  updateThemeAssets();
 
   const navShell = document.querySelector(".nav-shell");
   if (!navShell || navShell.querySelector("[data-theme-toggle]")) {
@@ -64,10 +81,53 @@ function initThemeToggle() {
     root.dataset.theme = root.dataset.theme === "light" ? "dark" : "light";
     localStorage.setItem(THEME_KEY, root.dataset.theme);
     updateLabel();
+    updateThemeAssets();
   });
 
   updateLabel();
   actionWrap.append(button);
+}
+
+function initSectionNavigation() {
+  const sections = Array.from(document.querySelectorAll("main > section"));
+  if (sections.length < 2) return;
+
+  const nav = document.createElement("nav");
+  nav.className = "section-nav";
+  nav.setAttribute("aria-label", "Navegación entre secciones");
+  nav.innerHTML = `
+    <button type="button" class="section-nav-btn" data-dir="up" aria-label="Sección anterior">&#8593;</button>
+    <button type="button" class="section-nav-btn" data-dir="down" aria-label="Siguiente sección">&#8595;</button>
+  `;
+  document.body.append(nav);
+
+  function getCurrentIndex() {
+    const scrollY = window.scrollY + window.innerHeight / 3;
+    for (let i = sections.length - 1; i >= 0; i--) {
+      if (sections[i].offsetTop <= scrollY) return i;
+    }
+    return 0;
+  }
+
+  nav.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-dir]");
+    if (!btn) return;
+    const current = getCurrentIndex();
+    const next = btn.dataset.dir === "up"
+      ? Math.max(0, current - 1)
+      : Math.min(sections.length - 1, current + 1);
+    sections[next].scrollIntoView({ behavior: "smooth" });
+  });
+}
+
+function initCtaWidget() {
+  document.querySelectorAll("[data-open-widget]").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const launcher = document.querySelector(".widget-toggle");
+      if (launcher) launcher.click();
+    });
+  });
 }
 
 export function initSharedExperience() {
@@ -75,6 +135,8 @@ export function initSharedExperience() {
   initThemeToggle();
   setFooterYear();
   initRevealAnimations();
+  initSectionNavigation();
+  initCtaWidget();
   initPromiseVoiceWidget({
     mode: import.meta.env.VITE_ELEVENLABS_MODE || "live",
     agentId: import.meta.env.VITE_ELEVENLABS_AGENT_ID || PROMISE_ELEVENLABS_AGENT_ID,

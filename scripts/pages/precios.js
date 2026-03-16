@@ -15,7 +15,7 @@ function renderPricingCards() {
     card.innerHTML = `
       <h3>${tier.name}</h3>
       <p class="pricing-range">${tier.range}</p>
-      <p>${tier.target}</p>
+      <p class="pricing-target">${tier.target}</p>
       <ul>${featureItems}</ul>
       <a class="btn btn-secondary" href="#cotizar">Solicitar cotización</a>
     `;

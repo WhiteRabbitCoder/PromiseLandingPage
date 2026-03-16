@@ -1,175 +1,105 @@
-const HOVER_DELAY_MS = 120;
+const PANEL_CLASSES = ["a1", "a2", "a3"];
 
-function createAmbient(agentId) {
-  if (agentId === "sofia") {
-    const wrap = document.createElement("div");
-    wrap.className = "ambient ambient-wave";
-    const heights = [22, 42, 65, 30, 78, 52, 88, 36, 74, 45, 58, 30];
-    heights.forEach((height) => {
-      const bar = document.createElement("span");
-      bar.style.height = `${height}%`;
-      wrap.append(bar);
-    });
-    return wrap;
-  }
-
-  if (agentId === "modular") {
-    const wrap = document.createElement("div");
-    wrap.className = "ambient ambient-grid";
-    return wrap;
-  }
-
+function createWaveform() {
   const wrap = document.createElement("div");
-  wrap.className = "ambient ambient-chat";
+  wrap.className = "waveform";
+  const heights = [18, 28, 50, 65, 82, 95, 105, 95, 78, 62, 45, 58, 72, 86, 70, 52, 38, 52, 68, 82, 66, 46, 32, 48, 60];
+  heights.forEach((h, i) => {
+    const bar = document.createElement("div");
+    bar.className = "wbar";
+    bar.style.height = h + "px";
+    bar.style.setProperty("--d", (1 + (i % 5) * 0.18) + "s");
+    bar.style.animationDelay = (i * 0.06) + "s";
+    wrap.append(bar);
+  });
+  return wrap;
+}
+
+function createDotGrid() {
+  const wrap = document.createElement("div");
+  wrap.className = "dotgrid";
+  for (let i = 0; i < 80; i++) {
+    wrap.append(document.createElement("span"));
+  }
+  return wrap;
+}
+
+function createStripes() {
+  const wrap = document.createElement("div");
+  wrap.className = "stripes";
+  return wrap;
+}
+
+function createChatBubbles() {
+  const wrap = document.createElement("div");
+  wrap.className = "chat-bubbles";
+  for (let i = 0; i < 4; i++) {
+    const bubble = document.createElement("div");
+    bubble.className = "chat-bubble";
+    wrap.append(bubble);
+  }
   return wrap;
 }
 
 function createPanel(agent, index) {
-  const panel = document.createElement("article");
-  panel.className = "agent-panel";
-  panel.classList.add(`agent-panel-${index + 1}`);
-  panel.dataset.agentId = agent.id;
-  panel.dataset.agentTheme = agent.theme;
-  panel.role = "button";
-  panel.tabIndex = 0;
-  panel.setAttribute("aria-expanded", index === 0 ? "true" : "false");
-  panel.setAttribute("aria-label", `${agent.name}: ${agent.role}`);
+  const panel = document.createElement("div");
+  panel.className = `a-panel ${PANEL_CLASSES[index]}`;
 
-  const header = document.createElement("div");
-  header.className = "agent-header";
+  // Accent line
+  const accent = document.createElement("div");
+  accent.className = "a-accent";
+  panel.append(accent);
 
-  const panelIndex = document.createElement("p");
-  panelIndex.className = "agent-index";
-  panelIndex.textContent = `${agent.index} · Agente`;
+  // Ghost letter
+  const ghost = document.createElement("span");
+  ghost.className = "a-ghost";
+  ghost.textContent = agent.name.charAt(0);
+  panel.append(ghost);
 
-  const panelName = document.createElement("h3");
-  panelName.className = "agent-name";
-  panelName.textContent = agent.name;
+  // Decorative elements
+  if (index === 0) panel.append(createWaveform());
+  if (index === 1) panel.append(createDotGrid());
+  if (index === 2) {
+    panel.append(createStripes());
+    panel.append(createChatBubbles());
+  }
 
-  const role = document.createElement("p");
-  role.className = "agent-role";
-  role.textContent = agent.role;
+  // Content
+  const content = document.createElement("div");
+  content.className = "a-content";
 
-  const status = document.createElement("span");
-  status.className = "agent-status";
-  status.textContent = agent.status;
+  content.innerHTML = `
+    <div class="a-index">${agent.index} · ${agent.channel}</div>
+    <h3 class="a-name">${agent.nameHtml}</h3>
+    <p class="a-type">${agent.role}</p>
+    <p class="a-desc">${agent.description}</p>
+  `;
 
-  header.append(panelIndex, panelName, role, status);
-  panel.append(header, createAmbient(agent.id));
-
+  panel.append(content);
   return panel;
 }
 
-function createDetailSection(title, values) {
-  const box = document.createElement("section");
-  box.className = "detail-box";
+export function initAgentsPanels({ stageElement, agents }) {
+  if (!stageElement || !agents?.length) return;
 
-  const heading = document.createElement("h4");
-  heading.textContent = title;
-
-  const list = document.createElement("ul");
-  values.forEach((value) => {
-    const item = document.createElement("li");
-    item.textContent = value;
-    list.append(item);
+  const panels = [];
+  agents.forEach((agent, index) => {
+    const panel = createPanel(agent, index);
+    stageElement.append(panel);
+    panels.push(panel);
   });
 
-  box.append(heading, list);
-  return box;
-}
-
-function renderAgentDetail(container, agent) {
-  container.replaceChildren();
-
-  const head = document.createElement("header");
-  head.className = "agent-detail-head";
-
-  const left = document.createElement("div");
-  const title = document.createElement("h3");
-  title.textContent = `${agent.name} · ${agent.role}`;
-  const description = document.createElement("p");
-  description.textContent = agent.summary;
-  left.append(title, description);
-
-  const status = document.createElement("span");
-  status.className = "chip";
-  status.textContent = agent.status;
-  head.append(left, status);
-
-  const grid = document.createElement("div");
-  grid.className = "agent-detail-grid";
-  grid.append(
-    createDetailSection("Capacidades", agent.capabilities),
-    createDetailSection("Arquitectura", agent.architecture)
-  );
-
-  const channelWrap = document.createElement("section");
-  channelWrap.className = "detail-box";
-  const channelTitle = document.createElement("h4");
-  channelTitle.textContent = "Canales";
-  const channelText = document.createElement("p");
-  channelText.textContent = agent.channels.join(" · ");
-  channelText.style.margin = "0.7rem 0 0";
-  channelText.style.color = "rgba(247, 207, 198, 0.88)";
-  channelWrap.append(channelTitle, channelText);
-
-  const kpiWrap = document.createElement("div");
-  kpiWrap.className = "detail-kpis";
-  agent.kpis.forEach((kpi) => {
-    const chip = document.createElement("span");
-    chip.className = "chip";
-    chip.textContent = kpi;
-    kpiWrap.append(chip);
-  });
-
-  container.append(head, grid, channelWrap, kpiWrap);
-}
-
-export function initAgentsExperience({ panelsElement, detailElement, agents }) {
-  if (!panelsElement || !detailElement || !agents?.length) {
-    return;
-  }
-
-  const panels = agents.map((agent, index) => createPanel(agent, index));
-  panelsElement.append(...panels);
-
-  let activeAgentId = agents[0].id;
-  let hoverTimer = null;
-
-  const activateAgent = (agentId) => {
-    const agent = agents.find((item) => item.id === agentId);
-    if (!agent) {
-      return;
-    }
-
-    activeAgentId = agentId;
-    panels.forEach((panel) => {
-      const isActive = panel.dataset.agentId === activeAgentId;
-      panel.classList.toggle("active", isActive);
-      panel.setAttribute("aria-expanded", String(isActive));
-    });
-
-    renderAgentDetail(detailElement, agent);
-  };
-
+  // Hover interaction: expand hovered panel, shrink others
   panels.forEach((panel) => {
-    panel.addEventListener("click", () => activateAgent(panel.dataset.agentId));
     panel.addEventListener("mouseenter", () => {
-      if (!window.matchMedia("(hover: hover)").matches) {
-        return;
-      }
-      clearTimeout(hoverTimer);
-      hoverTimer = setTimeout(() => activateAgent(panel.dataset.agentId), HOVER_DELAY_MS);
-    });
-    panel.addEventListener("mouseleave", () => clearTimeout(hoverTimer));
-    panel.addEventListener("keydown", (event) => {
-      if (event.key !== "Enter" && event.key !== " ") {
-        return;
-      }
-      event.preventDefault();
-      activateAgent(panel.dataset.agentId);
+      stageElement.classList.add("hovering");
+      panels.forEach((p) => p.classList.remove("expanded"));
+      panel.classList.add("expanded");
     });
   });
 
-  activateAgent(activeAgentId);
+  stageElement.addEventListener("mouseleave", () => {
+    stageElement.classList.remove("hovering");
+    panels.forEach((p) => p.classList.remove("expanded"));
+  });
 }

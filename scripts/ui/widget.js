@@ -3,193 +3,131 @@ import { Conversation } from "@11labs/client";
 const MAX_MESSAGES = 10;
 
 /* ════════════════════════════════════════
-   VOICE RIPPLE VISUALIZER
-   Concentric rings that expand from a glowing core.
-   Reacts to the agent's audio via Web Audio API;
-   falls back to a simulated speech envelope.
+   BARS VISUALIZER
+   Drives the 5 voice-bar elements via Web Audio API.
+   Intercepts RTCPeerConnection to tap the remote audio
+   stream from ElevenLabs WebRTC.
+   Falls back to a per-bar simulated envelope.
 ════════════════════════════════════════ */
-class VoiceWaveVisualizer {
-  constructor(canvas) {
-    this.canvas   = canvas;
-    this.ctx      = canvas.getContext("2d");
-    this.phase    = 0;
-    this.amp      = 0;
-    this.speaking = false;
-    this.rafId    = null;
-    this._kick    = 0;   // burst on speaking start, decays quickly
+function createBarsVisualizer(barEls) {
+  let rafId      = null;
+  let speaking   = false;
+  let audioCtx   = null, analyser = null, dataArray = null, connected = false;
+  let observer   = null;
+  let restoreRTC = null;
 
-    /* Audio analysis */
-    this._audioCtx  = null;
-    this._analyser  = null;
-    this._dataArray = null;
-    this._connected = false;
-    this._observer  = null;
-  }
+  try {
+    audioCtx = new AudioContext();
+    analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 128;
+    analyser.smoothingTimeConstant = 0.70;
+    dataArray = new Uint8Array(analyser.frequencyBinCount); // 64 bins
+    audioCtx.resume().catch(() => {});
 
-  initAudio() {
-    try {
-      this._audioCtx = new AudioContext();
-      this._analyser = this._audioCtx.createAnalyser();
-      this._analyser.fftSize = 128;
-      this._analyser.smoothingTimeConstant = 0.80;
-      this._dataArray = new Uint8Array(this._analyser.frequencyBinCount);
-      this._watchAudio();
-    } catch (_) { /* AudioContext unavailable */ }
-  }
-
-  _watchAudio() {
-    this._tryConnect();
-    this._observer = new MutationObserver(() => this._tryConnect());
-    this._observer.observe(document.body, { childList: true, subtree: true });
-  }
-
-  _tryConnect() {
-    if (this._connected || !this._audioCtx) return;
-    for (const el of document.querySelectorAll("audio")) {
-      if (el._wvDone) continue;
-      try {
-        const src = this._audioCtx.createMediaElementSource(el);
-        src.connect(this._analyser);
-        this._analyser.connect(this._audioCtx.destination);
-        el._wvDone      = true;
-        this._connected = true;
-        this._audioCtx.resume().catch(() => {});
-        break;
-      } catch (_) { el._wvDone = true; }
-    }
-  }
-
-  _level() {
-    if (this._analyser && this._connected) {
-      this._analyser.getByteFrequencyData(this._dataArray);
-      let s = 0;
-      for (let i = 0; i < this._dataArray.length; i++) s += this._dataArray[i];
-      return s / (this._dataArray.length * 255);
-    }
-    /* Simulated speech: envelope + harmonic variation + noise */
-    if (!this.speaking) return 0.02;
-    const t = performance.now() / 1000;
-    const env  = 0.38 + 0.20 * Math.sin(t * 2.1);
-    const harm = 0.17 * Math.sin(t * 8.6) + 0.11 * Math.sin(t * 14.3);
-    const noise = 0.06 * (Math.random() - 0.5);
-    return Math.max(0.05, env + harm + noise);
-  }
-
-  setSpeaking(val) {
-    const prev = this.speaking;
-    this.speaking = Boolean(val);
-    /* Surge on speaking start for immediate visual feedback */
-    if (!prev && this.speaking) this._kick = 0.55;
-  }
-
-  start() {
-    if (this.rafId) return;
-    const draw = () => {
-      this.rafId = requestAnimationFrame(draw);
-
-      /* Sync canvas pixel dimensions */
-      const dpr = window.devicePixelRatio || 1;
-      const cw  = Math.round(this.canvas.offsetWidth  * dpr);
-      const ch  = Math.round(this.canvas.offsetHeight * dpr);
-      if (this.canvas.width !== cw || this.canvas.height !== ch) {
-        this.canvas.width  = cw;
-        this.canvas.height = ch;
-      }
-      if (!cw || !ch) return;
-
-      const W   = this.canvas.width;
-      const H   = this.canvas.height;
-      const ctx = this.ctx;
-
-      ctx.clearRect(0, 0, W, H);
-
-      /* Decay the kick burst */
-      this._kick *= 0.88;
-
-      /* Smooth amplitude + add kick */
-      const raw   = this._level() + this._kick;
-      const lerpK = this.speaking ? 0.18 : 0.06;
-      this.amp   += (raw - this.amp) * lerpK;
-      const a = Math.min(this.amp, 1);
-
-      /* Phase drives ring expansion speed */
-      this.phase = (this.phase + 0.005 + a * 0.022) % 1;
-
-      const cx      = W / 2;
-      const cy      = H / 2;
-      const minDim  = Math.min(W, H);
-      const maxR    = minDim * 0.46;
-      const coreR   = minDim * 0.07 + a * minDim * 0.048;
-
-      /* ── Gold ripple rings ── */
-      const RINGS = 5;
-      for (let i = 0; i < RINGS; i++) {
-        const t  = (this.phase + i / RINGS) % 1;
-        const r  = coreR + t * maxR;
-        const op = (1 - t) * (0.10 + a * 0.85);
-        const lw = (1 - t) * (1.5 + a * 3.8);
-        ctx.beginPath();
-        ctx.arc(cx, cy, r, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(254,184,0,${op.toFixed(3)})`;
-        ctx.lineWidth   = lw;
-        ctx.stroke();
-      }
-
-      /* ── Amber secondary rings (offset phase) ── */
-      for (let i = 0; i < RINGS - 1; i++) {
-        const t  = (this.phase * 0.62 + 0.2 + i / (RINGS - 1)) % 1;
-        const r  = coreR * 1.5 + t * maxR * 0.82;
-        const op = (1 - t) * (0.06 + a * 0.46);
-        const lw = (1 - t) * (1 + a * 2.2);
-        ctx.beginPath();
-        ctx.arc(cx, cy, r, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(255,105,40,${op.toFixed(3)})`;
-        ctx.lineWidth   = lw;
-        ctx.stroke();
-      }
-
-      /* ── Glow halo ── */
-      const haloR = coreR * 2.4;
-      const glow  = ctx.createRadialGradient(cx, cy, coreR * 0.4, cx, cy, haloR);
-      glow.addColorStop(0,   `rgba(255,242,190,${(0.4 + a * 0.45).toFixed(3)})`);
-      glow.addColorStop(0.5, `rgba(254,184,0,${(0.18 + a * 0.28).toFixed(3)})`);
-      glow.addColorStop(1,   "rgba(150,20,20,0)");
-      ctx.beginPath();
-      ctx.arc(cx, cy, haloR, 0, Math.PI * 2);
-      ctx.fillStyle = glow;
-      ctx.fill();
-
-      /* ── Core sphere ── */
-      const cg = ctx.createRadialGradient(
-        cx - coreR * 0.28, cy - coreR * 0.28, 0,
-        cx, cy, coreR
-      );
-      cg.addColorStop(0,    "#fffce0");
-      cg.addColorStop(0.45, "#ffc84a");
-      cg.addColorStop(1,    "#8a1e1e");
-      ctx.beginPath();
-      ctx.arc(cx, cy, coreR, 0, Math.PI * 2);
-      ctx.fillStyle = cg;
-      ctx.fill();
+    /* ── Intercept RTCPeerConnection to capture remote audio ── */
+    const OrigRTCPC = window.RTCPeerConnection;
+    window.RTCPeerConnection = function (...args) {
+      const pc = new OrigRTCPC(...args);
+      pc.addEventListener("track", (e) => {
+        if (e.track.kind === "audio" && e.streams[0] && !connected) {
+          try {
+            audioCtx.createMediaStreamSource(e.streams[0]).connect(analyser);
+            /* Do NOT connect analyser→destination: WebRTC handles playback */
+            connected = true;
+            audioCtx.resume().catch(() => {});
+          } catch (_) {}
+        }
+      });
+      return pc;
     };
-    draw();
+    window.RTCPeerConnection.prototype = OrigRTCPC.prototype;
+    restoreRTC = () => { window.RTCPeerConnection = OrigRTCPC; };
+
+    /* ── Fallback: also watch for <audio> elements ── */
+    const tryConnectEl = () => {
+      if (connected) return;
+      for (const el of document.querySelectorAll("audio")) {
+        if (el._bvDone) continue;
+        try {
+          audioCtx.createMediaElementSource(el).connect(analyser);
+          analyser.connect(audioCtx.destination);
+          el._bvDone = true;
+          connected  = true;
+          break;
+        } catch (_) { el._bvDone = true; }
+      }
+    };
+    observer = new MutationObserver(tryConnectEl);
+    observer.observe(document.body, { childList: true, subtree: true });
+    tryConnectEl();
+  } catch (_) { /* AudioContext unavailable */ }
+
+  const n = barEls.length;
+
+  function draw() {
+    rafId = requestAnimationFrame(draw);
+
+    let levels;
+
+    if (analyser && connected) {
+      analyser.getByteFrequencyData(dataArray);
+      /* Map voice-range bins (1-15) to the 5 bars, 3 bins each */
+      const START = 1, BINS_PER_BAR = 3;
+      levels = Array.from({ length: n }, (_, i) => {
+        let s = 0;
+        for (let j = START + i * BINS_PER_BAR; j < START + (i + 1) * BINS_PER_BAR; j++) {
+          s += dataArray[j] || 0;
+        }
+        return (s / BINS_PER_BAR) / 255;
+      });
+    } else {
+      /* Simulated multi-frequency envelope */
+      const t = performance.now() / 1000;
+      const freqs = [6.1, 9.4, 13.7, 9.8, 6.5]; // different rate per bar
+      levels = freqs.map((f, i) => {
+        if (!speaking) return 0.04 + 0.03 * Math.sin(t * 1.2 + i);
+        const env  = 0.38 + 0.22 * Math.sin(t * 2.3 + i * 0.9);
+        const harm = 0.20 * Math.sin(t * f)  + 0.10 * Math.sin(t * f * 1.6);
+        const noise = 0.06 * (Math.random() - 0.5);
+        return Math.max(0.05, Math.min(1, env + harm + noise));
+      });
+    }
+
+    barEls.forEach((bar, i) => {
+      /* Exaggerated: scale range 0.12 → 3.5 */
+      const scale = 0.12 + levels[i] * 3.38;
+      bar.style.transform = `scaleY(${scale.toFixed(3)})`;
+      bar.style.opacity   = (0.35 + levels[i] * 0.65).toFixed(3);
+    });
   }
 
-  stop() {
-    if (this.rafId) { cancelAnimationFrame(this.rafId); this.rafId = null; }
-  }
+  return {
+    setSpeaking(val) { speaking = Boolean(val); },
 
-  destroy() {
-    this.stop();
-    if (this._observer) { this._observer.disconnect();           this._observer  = null; }
-    if (this._audioCtx) { this._audioCtx.close().catch(() => {}); this._audioCtx  = null; }
-    this._analyser  = null;
-    this._dataArray = null;
-    this._connected = false;
-  }
+    start() {
+      if (rafId) return;
+      /* Disable CSS keyframe animations — JS takes over */
+      barEls.forEach(b => { b.style.animation = "none"; });
+      draw();
+    },
+
+    stop() {
+      if (rafId)      { cancelAnimationFrame(rafId); rafId = null; }
+      if (observer)   { observer.disconnect(); observer = null; }
+      if (restoreRTC) { restoreRTC(); restoreRTC = null; }
+      if (audioCtx)   { audioCtx.close().catch(() => {}); audioCtx = null; }
+      analyser  = null;
+      dataArray = null;
+      connected = false;
+      /* Restore CSS animations */
+      barEls.forEach(b => {
+        b.style.animation = "";
+        b.style.transform = "";
+        b.style.opacity   = "";
+      });
+    }
+  };
 }
-
-/* ════════════════════════════════════════ */
 
 function normalizeConfig(userConfig = {}) {
   const envAgentId =
@@ -330,18 +268,15 @@ export function initPromiseVoiceWidget(userConfig = {}) {
   voiceStage.className = "widget-voice-stage";
   voiceStage.setAttribute("aria-hidden", "true");
 
-  const voiceCanvas = document.createElement("canvas");
-  voiceCanvas.className = "voice-canvas";
+  const voiceBars = document.createElement("div");
+  voiceBars.className = "voice-bars";
+  for (let i = 0; i < 5; i++) {
+    const bar = document.createElement("span");
+    bar.className = "voice-bar";
+    voiceBars.append(bar);
+  }
 
-  const voiceOverlay = document.createElement("div");
-  voiceOverlay.className = "voice-overlay";
-
-  const voiceCaption = document.createElement("p");
-  voiceCaption.className = "voice-caption";
-  voiceCaption.textContent = "Promi está lista para hablar contigo";
-
-  voiceOverlay.append(voiceCaption);
-  voiceStage.append(voiceCanvas, voiceOverlay);
+  voiceStage.append(voiceBars);
 
   const voiceFoot = document.createElement("div");
   voiceFoot.className = "widget-voice-foot";
@@ -424,8 +359,6 @@ export function initPromiseVoiceWidget(userConfig = {}) {
     chat.scrollTop = chat.scrollHeight;
   }
 
-  function setVoiceCaption(text) { voiceCaption.textContent = text; }
-
   function enterConnectedTextUi() {
     btnStartText.hidden  = true;
     textForm.hidden      = false;
@@ -438,7 +371,6 @@ export function initPromiseVoiceWidget(userConfig = {}) {
   function enterConnectedVoiceUi() {
     btnStartVoice.hidden         = true;
     voiceActiveControls.hidden   = false;
-    visualizer?.start();
   }
 
   function resetTextUi() {
@@ -453,10 +385,10 @@ export function initPromiseVoiceWidget(userConfig = {}) {
     btnStartVoice.disabled       = false;
     voiceActiveControls.hidden   = true;
     root.classList.remove("agent-speaking");
-    setVoiceCaption("Promi está lista para hablar contigo");
+    root.classList.remove("voice-listening");
     micMuted = false;
     btnMic.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 10v2a7 7 0 01-14 0v-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Silenciar`;
-    if (visualizer) { visualizer.destroy(); visualizer = null; }
+    if (visualizer) { visualizer.stop(); visualizer = null; }
   }
 
   function syncMode() {
@@ -512,11 +444,8 @@ export function initPromiseVoiceWidget(userConfig = {}) {
 
     setStatus(mode === "voice" ? "Conectando en modo voz..." : "Conectando en modo texto...");
 
-    /* Create visualizer before connecting so audio init runs in parallel */
     if (mode === "voice") {
-      visualizer = new VoiceWaveVisualizer(voiceCanvas);
-      visualizer.initAudio();
-      /* Start a calm idle animation immediately */
+      visualizer = createBarsVisualizer(Array.from(voiceBars.children));
       visualizer.start();
     }
 
@@ -527,7 +456,7 @@ export function initPromiseVoiceWidget(userConfig = {}) {
 
       conversation = await Conversation.startSession({
         agentId:        config.agentId,
-        connectionType: "webrtc",
+        connectionType: mode === "voice" ? "webrtc" : "websocket",
         ...(mode === "text" ? { textOnly: true } : {}),
 
         onConnect: () => {
@@ -537,7 +466,6 @@ export function initPromiseVoiceWidget(userConfig = {}) {
             addChatMessage("Hola, soy Promi. ¿En qué puedo ayudarte hoy?", "bot");
           } else {
             enterConnectedVoiceUi();
-            setVoiceCaption("Promi conectada, ya puedes hablar");
           }
         },
 
@@ -555,14 +483,15 @@ export function initPromiseVoiceWidget(userConfig = {}) {
           const val = modePayload?.mode || String(modePayload);
           if (val === "speaking") {
             root.classList.add("agent-speaking");
-            setVoiceCaption("Promi está hablando...");
+            root.classList.remove("voice-listening");
             visualizer?.setSpeaking(true);
           } else if (val === "listening") {
             root.classList.remove("agent-speaking");
-            setVoiceCaption("Escuchándote...");
+            root.classList.add("voice-listening");
             visualizer?.setSpeaking(false);
           } else {
             root.classList.remove("agent-speaking");
+            root.classList.remove("voice-listening");
             visualizer?.setSpeaking(false);
           }
         },

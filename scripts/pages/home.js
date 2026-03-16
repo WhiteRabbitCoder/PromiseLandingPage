@@ -1,24 +1,12 @@
 import { initSharedExperience } from "../main.js";
-import {
-  agentData,
-  faqData,
-  implementationSteps,
-  integrations,
-  kpiData,
-  riwiCallHighlights,
-  roadmap,
-  useCases
-} from "../data.js";
-import { initAgentsExperience } from "../ui/agents.js";
+import { agentData, implementationSteps, kpiData, marketPills } from "../data.js";
+import { initAgentsPanels } from "../ui/agents.js";
 
-// Se repite el set de KPIs 4 veces por loop para asegurar ancho continuo en pantallas amplias y evitar huecos.
 const METRICS_TICKER_LOOPS = 4;
 
 function renderTicker() {
   const track = document.querySelector("[data-metrics-track]");
-  if (!track) {
-    return;
-  }
+  if (!track) return;
 
   track.replaceChildren();
   const repeatedKpis = [];
@@ -50,32 +38,13 @@ function renderTicker() {
   track.append(createLoop(), createLoop());
 }
 
-function renderRiwiCallSpotlight() {
-  const container = document.querySelector("[data-riwicall-grid]");
-  if (!container) {
-    return;
-  }
-
-  riwiCallHighlights.forEach((item) => {
-    const card = document.createElement("article");
-    card.className = "riwicall-card surface reveal";
-    card.innerHTML = `
-      <h3>${item.title}</h3>
-      <p>${item.description}</p>
-    `;
-    container.append(card);
-  });
-}
-
 function renderKpis() {
   const container = document.querySelector("[data-kpi-grid]");
-  if (!container) {
-    return;
-  }
+  if (!container) return;
 
   kpiData.forEach((item) => {
     const card = document.createElement("article");
-    card.className = "stat-card surface reveal";
+    card.className = "stat-card reveal";
     card.innerHTML = `
       <p class="value">${item.value}</p>
       <h3>${item.label}</h3>
@@ -85,34 +54,15 @@ function renderKpis() {
   });
 }
 
-function renderUseCases() {
-  const container = document.querySelector("[data-use-cases]");
-  if (!container) {
-    return;
-  }
-
-  useCases.forEach((useCase) => {
-    const card = document.createElement("article");
-    card.className = "use-case-card surface reveal";
-    card.innerHTML = `
-      <h3>${useCase.industry}</h3>
-      <p><strong>Cómo se usa:</strong> ${useCase.how}</p>
-      <p><strong>Impacto:</strong> ${useCase.impact}</p>
-    `;
-    container.append(card);
-  });
-}
-
-function renderImplementation() {
-  const container = document.querySelector("[data-implementation-grid]");
-  if (!container) {
-    return;
-  }
+function renderSteps() {
+  const container = document.querySelector("[data-steps-grid]");
+  if (!container) return;
 
   implementationSteps.forEach((step, index) => {
     const card = document.createElement("article");
-    card.className = "implementation-step surface reveal";
+    card.className = "step-card reveal";
     card.innerHTML = `
+      <div class="step-bar"></div>
       <p class="index">0${index + 1}</p>
       <h3>${step.title}</h3>
       <p>${step.description}</p>
@@ -121,104 +71,26 @@ function renderImplementation() {
   });
 }
 
-function renderIntegrations() {
-  const container = document.querySelector("[data-integrations-grid]");
-  if (!container) {
-    return;
-  }
+function renderMarkets() {
+  const container = document.querySelector("[data-market-pills]");
+  if (!container) return;
 
-  integrations.forEach((integration) => {
-    const card = document.createElement("article");
-    card.className = "integration-card surface reveal";
-    card.innerHTML = `
-      <h3>${integration.name}</h3>
-      <p>${integration.description}</p>
-    `;
-    container.append(card);
-  });
-}
-
-function renderRoadmap() {
-  const container = document.querySelector("[data-roadmap-grid]");
-  if (!container) {
-    return;
-  }
-
-  roadmap.forEach((item) => {
-    const card = document.createElement("article");
-    card.className = "roadmap-card reveal";
-    card.innerHTML = `
-      <h3>${item.title}</h3>
-      <p>${item.description}</p>
-      <span class="roadmap-badge">${item.status}</span>
-    `;
-    container.append(card);
-  });
-}
-
-function renderFaq() {
-  const container = document.querySelector("[data-faq-list]");
-  if (!container) {
-    return;
-  }
-
-  faqData.forEach((item, index) => {
-    const article = document.createElement("article");
-    article.className = `faq-item reveal ${index === 0 ? "open" : ""}`.trim();
-
-    const questionId = `faq-${index + 1}`;
-    const answerId = `faq-answer-${index + 1}`;
-
-    article.innerHTML = `
-      <button id="${questionId}" aria-expanded="${index === 0}" aria-controls="${answerId}">
-        <span>${item.question}</span>
-        <span class="symbol">${index === 0 ? "−" : "+"}</span>
-      </button>
-      <p id="${answerId}" role="region" aria-labelledby="${questionId}">${item.answer}</p>
-    `;
-    container.append(article);
-  });
-
-  container.querySelectorAll(".faq-item button").forEach((button) => {
-    button.addEventListener("click", () => {
-      const article = button.closest(".faq-item");
-      const isOpen = article.classList.toggle("open");
-      button.setAttribute("aria-expanded", String(isOpen));
-      button.querySelector(".symbol").textContent = isOpen ? "−" : "+";
-    });
-  });
-}
-
-function renderHeroPulse() {
-  const pulse = document.querySelector("[data-pulse-grid]");
-  if (!pulse) {
-    return;
-  }
-
-  for (let index = 0; index < 30; index += 1) {
-    const dot = document.createElement("span");
-    pulse.append(dot);
-  }
-}
-
-function initAgents() {
-  initAgentsExperience({
-    panelsElement: document.querySelector("[data-agents-panels]"),
-    detailElement: document.querySelector("[data-agent-detail]"),
-    agents: agentData
+  marketPills.forEach((label) => {
+    const pill = document.createElement("span");
+    pill.className = "pill";
+    pill.textContent = label;
+    container.append(pill);
   });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   renderTicker();
   renderKpis();
-  renderUseCases();
-  renderImplementation();
-  renderIntegrations();
-  renderRoadmap();
-  renderFaq();
-  renderRiwiCallSpotlight();
-  renderHeroPulse();
-  initAgents();
+  renderSteps();
+  renderMarkets();
+  initAgentsPanels({
+    stageElement: document.querySelector("[data-agents-stage]"),
+    agents: agentData
+  });
   initSharedExperience();
 });

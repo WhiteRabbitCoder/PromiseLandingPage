@@ -10,9 +10,12 @@ function renderFlow() {
   processFlow.forEach((step) => {
     const card = document.createElement("article");
     card.className = "flow-card surface reveal";
+    const parts = step.title.split(". ");
+    const index = parts[0];
+    const title = parts.slice(1).join(". ");
     card.innerHTML = `
-      <p class="index">${step.title.split(".")[0]}</p>
-      <h3>${step.title}</h3>
+      <p class="index">${index}</p>
+      <h3>${title}</h3>
       <p>${step.description}</p>
     `;
     container.append(card);
