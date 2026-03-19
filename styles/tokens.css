@@ -7,11 +7,11 @@
   --color-surface-soft: #f3d5cf;
   --color-bridge: #8b2e34;
   --color-accent: #feb800;
-  --color-text: #240200;
+  --color-text: #55050c;
   --color-text-soft: #52060b;
-  --color-outline: rgba(36, 2, 0, 0.10);
-  --color-outline-strong: rgba(36, 2, 0, 0.22);
-  --color-shadow: rgba(36, 2, 0, 0.12);
+  --color-outline: rgba(85, 5, 12, 0.10);
+  --color-outline-strong: rgba(85, 5, 12, 0.22);
+  --color-shadow: rgba(85, 5, 12, 0.12);
 
   --font-display: "Iosevka_Charon_Mono", "Iosevka Charon", "Iosevka", "JetBrains Mono", monospace;
   --font-body: "Raleway", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
