@@ -30,7 +30,7 @@ This document is structured so it can be easily interpreted by **design systems,
 The palette follows a **dark → warm → light hierarchy**:
 
 ```
-#240200 → #52060B → #8B2E34 → #FEB800 → #FFEFEB
+#240200 → #52060B → #8B2E34 → #ffbc00 → #FFEFEB
 ```
 
 This progression allows the system to work naturally in **both light and dark interfaces** while preserving brand consistency.

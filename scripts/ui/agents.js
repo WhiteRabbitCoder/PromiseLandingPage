@@ -89,17 +89,39 @@ export function initAgentsPanels({ stageElement, agents }) {
     panels.push(panel);
   });
 
-  // Hover interaction: expand hovered panel, shrink others
+  let activePanel = null;
+
+  function setActivePanel(panel) {
+    if (!panel || activePanel === panel) return;
+    activePanel = panel;
+    
+    // Clean up old classes
+    stageElement.classList.remove("hovering-a1", "hovering-a2", "hovering-a3", "hovering");
+    
+    // Add correct class
+    const pIndex = panels.indexOf(panel);
+    stageElement.classList.add(`hovering-a${pIndex + 1}`);
+    stageElement.classList.add("hovering");
+
+    panels.forEach((p) => p.classList.toggle("expanded", p === panel));
+  }
+
+  // Fallback when entering directly over a visible panel slice.
   panels.forEach((panel) => {
-    panel.addEventListener("mouseenter", () => {
-      stageElement.classList.add("hovering");
-      panels.forEach((p) => p.classList.remove("expanded"));
-      panel.classList.add("expanded");
-    });
+    panel.addEventListener("mouseenter", () => setActivePanel(panel));
+  });
+
+  // Primary interaction: resolve hovered panel continuously by pointer location.
+  stageElement.addEventListener("pointermove", (e) => {
+    const panel = e.target.closest(".a-panel");
+    if (panel && panels.includes(panel)) {
+      setActivePanel(panel);
+    }
   });
 
   stageElement.addEventListener("mouseleave", () => {
-    stageElement.classList.remove("hovering");
+    activePanel = null;
+    stageElement.classList.remove("hovering", "hovering-a1", "hovering-a2", "hovering-a3");
     panels.forEach((p) => p.classList.remove("expanded"));
   });
 }

@@ -21,7 +21,7 @@ export const agentData = [
     id: "sofia",
     index: "01",
     channel: "Voz",
-    name: "SofIA",
+    name: "Sofía",
     nameHtml: "Sof<span class=\"accent\">IA</span>",
     role: "Agente integral de voz",
     description:
@@ -157,7 +157,7 @@ export const aboutEvidence = [
   {
     title: "Caso de referencia: RiwiCall",
     description:
-      "Primer producto validado con SofIA en un escenario real de admisiones de alto volumen."
+      "Primer producto validado con Sofía en un escenario real de admisiones de alto volumen."
   },
   {
     title: "Método de ingeniería",

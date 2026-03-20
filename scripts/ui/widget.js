@@ -1,4 +1,4 @@
-import { Conversation } from "@11labs/client";
+import { Conversation } from "@elevenlabs/client";
 
 const MAX_MESSAGES = 10;
 
@@ -463,7 +463,6 @@ export function initPromiseVoiceWidget(userConfig = {}) {
           setStatus(mode === "voice" ? "Conectada · en voz" : "Conectada · escríbeme");
           if (mode === "text") {
             enterConnectedTextUi();
-            addChatMessage("Hola, soy Promi. ¿En qué puedo ayudarte hoy?", "bot");
           } else {
             enterConnectedVoiceUi();
           }
@@ -542,15 +541,27 @@ export function initPromiseVoiceWidget(userConfig = {}) {
   /* ── Logo follows cursor — page-wide with rAF lerp ── */
   const toggleLogo = toggleBtn.querySelector(".toggle-logo");
   let lgTgtX = 0, lgTgtY = 0, lgCurX = 0, lgCurY = 0;
+  const MAX = 8;
 
   window.addEventListener("mousemove", (e) => {
     const r  = toggleBtn.getBoundingClientRect();
     const dx = e.clientX - (r.left + r.width  / 2);
     const dy = e.clientY - (r.top  + r.height / 2);
     const d  = Math.hypot(dx, dy) || 1;
-    const MAX = 8;
     lgTgtX = (dx / d) * MAX;
     lgTgtY = (dy / d) * MAX;
+  });
+
+  window.addEventListener("deviceorientation", (e) => {
+    if (e.gamma === null || e.beta === null) return;
+    // Map tilt angles (gamma ~ x-axis, beta ~ y-axis)
+    // Standard phone tilt: resting state can vary, but let's clamp loosely at 45 degrees
+    const g = Math.max(-45, Math.min(45, e.gamma));
+    // For beta (pitch), normal resting is usually ~ 45deg up, but we'll use a relative baseline or just simple mapping
+    const b = Math.max(-45, Math.min(45, e.beta - 45)); // Assumes holding phone at 45 degree angle
+
+    lgTgtX = (g / 45) * MAX;
+    lgTgtY = (b / 45) * MAX;
   });
 
   (function animateLogo() {

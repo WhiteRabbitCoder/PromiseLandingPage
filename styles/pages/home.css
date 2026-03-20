@@ -1,11 +1,11 @@
 /* ─── HERO ─── */
 .home-hero {
   position: relative;
-  min-height: 100vh;
+  min-height: calc(100svh - 10rem);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 9rem 4rem 5rem;
+  justify-content: flex-start;
+  padding: 4.75rem 4rem 0.75rem;
   overflow: hidden;
 }
 
@@ -48,7 +48,7 @@
 }
 
 .home-hero>p {
-  margin-top: 2.5rem;
+  margin-top: 1.35rem;
   font-size: 1.2rem;
   font-weight: 400;
   color: color-mix(in srgb, var(--color-text) 55%, transparent);
@@ -59,7 +59,7 @@
 }
 
 .hero-actions {
-  margin-top: 2.8rem;
+  margin-top: 1.6rem;
   display: flex;
   flex-wrap: wrap;
   gap: 0.9rem;
@@ -69,7 +69,7 @@
 
 .scroll-hint {
   position: absolute;
-  bottom: 2.5rem;
+  bottom: 0.35rem;
   left: 4rem;
   display: flex;
   align-items: center;
@@ -309,7 +309,7 @@
   transition: clip-path 500ms var(--ease-standard), filter 300ms ease, z-index 0ms;
 }
 
-/* Panel 1: SofIA — Dark */
+/* Panel 1: Sofía — Dark */
 .a-panel.a1 {
   background: var(--color-bg);
   clip-path: polygon(0 0, 40% 0, 32% 100%, 0 100%);
@@ -531,32 +531,47 @@
   background: rgba(36, 2, 0, 0.2);
 }
 
-/* Agent panel hover expansion — shrunk state */
-.agents-stage.hovering .a-panel.a1 {
-  clip-path: polygon(0 0, 24% 0, 18% 100%, 0 100%);
+/* Agent panel hover expansion - tiled and symmetric */
+/* When Panel 1 is hovered */
+.agents-stage.hovering-a1 .a-panel.a1 {
+  clip-path: polygon(0 0, 56% 0, 48% 100%, 0 100%);
+  z-index: 2;
+}
+.agents-stage.hovering-a1 .a-panel.a2 {
+  clip-path: polygon(56% 0, 78% 0, 70% 100%, 48% 100%);
   z-index: 1;
 }
-.agents-stage.hovering .a-panel.a2 {
-  clip-path: polygon(24% 0, 56% 0, 50% 100%, 18% 100%);
-  z-index: 1;
-}
-.agents-stage.hovering .a-panel.a3 {
-  clip-path: polygon(56% 0, 100% 0, 100% 100%, 50% 100%);
+.agents-stage.hovering-a1 .a-panel.a3 {
+  clip-path: polygon(78% 0, 100% 0, 100% 100%, 70% 100%);
   z-index: 1;
 }
 
-/* Expanded state — the hovered panel grows, z-index on top */
-.agents-stage.hovering .a-panel.a1.expanded {
-  clip-path: polygon(0 0, 52% 0, 46% 100%, 0 100%);
-  z-index: 4;
+/* When Panel 2 is hovered */
+.agents-stage.hovering-a2 .a-panel.a1 {
+  clip-path: polygon(0 0, 22% 0, 14% 100%, 0 100%);
+  z-index: 1;
 }
-.agents-stage.hovering .a-panel.a2.expanded {
-  clip-path: polygon(18% 0, 78% 0, 72% 100%, 12% 100%);
-  z-index: 4;
+.agents-stage.hovering-a2 .a-panel.a2 {
+  clip-path: polygon(22% 0, 78% 0, 70% 100%, 14% 100%);
+  z-index: 2;
 }
-.agents-stage.hovering .a-panel.a3.expanded {
-  clip-path: polygon(50% 0, 100% 0, 100% 100%, 44% 100%);
-  z-index: 4;
+.agents-stage.hovering-a2 .a-panel.a3 {
+  clip-path: polygon(78% 0, 100% 0, 100% 100%, 70% 100%);
+  z-index: 1;
+}
+
+/* When Panel 3 is hovered */
+.agents-stage.hovering-a3 .a-panel.a1 {
+  clip-path: polygon(0 0, 22% 0, 14% 100%, 0 100%);
+  z-index: 1;
+}
+.agents-stage.hovering-a3 .a-panel.a2 {
+  clip-path: polygon(22% 0, 44% 0, 36% 100%, 14% 100%);
+  z-index: 1;
+}
+.agents-stage.hovering-a3 .a-panel.a3 {
+  clip-path: polygon(44% 0, 100% 0, 100% 100%, 36% 100%);
+  z-index: 2;
 }
 
 /* Waveform in panel 1 */
@@ -971,7 +986,8 @@
 /* ─── RESPONSIVE ─── */
 @media (max-width: 900px) {
   .home-hero {
-    padding: 8rem 1.5rem 4rem;
+    min-height: auto;
+    padding: 6.75rem 1.5rem 2rem;
   }
 
   .problem-grid {

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Prueba Modo Texto - ElevenLabs</title>
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: 40px auto; }
+    #chat { border: 1px solid #ccc; height: 300px; overflow-y: auto; padding: 10px; margin-bottom: 10px; }
+    .msg { margin: 5px 0; padding: 5px 10px; border-radius: 5px; max-width: 80%; }
+    .msg.user { background: #e0f7fa; margin-left: auto; }
+    .msg.agent { background: #f1f8e9; margin-right: auto; }
+    form { display: flex; gap: 10px; }
+    input { flex: 1; padding: 8px; }
+    button { padding: 8px 16px; }
+  </style>
+</head>
+<body>
+  <h2>Modo Texto (Solo Chat)</h2>
+  <div id="chat"></div>
+  <form id="form">
+    <input type="text" id="input" autocomplete="off" placeholder="Escribe un mensaje..." required />
+    <button type="submit" id="send">Enviar</button>
+  </form>
+
+  <script type="module">
+    // Se importa la versión más reciente desde un CDN que coincide con la librería oficial
+    import { Conversation } from 'https://cdn.jsdelivr.net/npm/@elevenlabs/client@0.15.2/dist/index.js';
+    
+    // Configuramos los elementos
+    const chat = document.getElementById('chat');
+    const form = document.getElementById('form');
+    const input = document.getElementById('input');
+    const AGENT_ID = 'agent_4501kksmbgj2fwnrzpkzjdk06bej'; // ID de prueba de tu mensaje
+    
+    let conversation;
+
+    function addMessage(text, sender) {
+      const p = document.createElement('div');
+      p.className = `msg ${sender}`;
+      p.textContent = (sender === 'user' ? 'Tú: ' : 'Agente: ') + text;
+      chat.appendChild(p);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    async function init() {
+      try {
+        addMessage('Conectando al agente en modo texto...', 'agent');
+        
+        conversation = await Conversation.startSession({
+          agentId: AGENT_ID,
+          textOnly: true, // Esto desactiva el canal de voz en la librería actual
+          connectionType: "websocket",
+          onConnect: () => {
+            addMessage('¡Conectado! Puedes escribir.', 'agent');
+          },
+          onMessage: (message) => {
+            if (message.source === "ai") {
+              addMessage(message.message, 'agent');
+            }
+          },
+          onError: (error) => {
+            console.error('Error:', error);
+            addMessage('Ocurrió un error en la conexión', 'agent');
+          }
+        });
+      } catch (e) {
+        console.error("No se pudo iniciar", e);
+      }
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const text = input.value.trim();
+      if (!text || !conversation) return;
+      
+      addMessage(text, 'user');
+      conversation.sendUserMessage(text);
+      input.value = '';
+    });
+
+    init();
+  </script>
+</body>
+</html>

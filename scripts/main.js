@@ -109,14 +109,33 @@ function initSectionNavigation() {
     return 0;
   }
 
+  function goToSection(dir) {
+    const current = getCurrentIndex();
+    const next = dir === "up"
+      ? Math.max(0, current - 1)
+      : Math.min(sections.length - 1, current + 1);
+    if (next === current) return;
+    sections[next].scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
   nav.addEventListener("click", (e) => {
     const btn = e.target.closest("[data-dir]");
     if (!btn) return;
-    const current = getCurrentIndex();
-    const next = btn.dataset.dir === "up"
-      ? Math.max(0, current - 1)
-      : Math.min(sections.length - 1, current + 1);
-    sections[next].scrollIntoView({ behavior: "smooth" });
+    goToSection(btn.dataset.dir);
+  });
+
+  window.addEventListener("keydown", (e) => {
+    const target = e.target;
+    const tag = target?.tagName;
+    if (tag === "INPUT" || tag === "TEXTAREA" || target?.isContentEditable) return;
+
+    if (e.key === "ArrowDown" || e.key === "PageDown") {
+      e.preventDefault();
+      goToSection("down");
+    } else if (e.key === "ArrowUp" || e.key === "PageUp") {
+      e.preventDefault();
+      goToSection("up");
+    }
   });
 }
 

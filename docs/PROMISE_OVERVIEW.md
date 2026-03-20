@@ -81,7 +81,7 @@ Promise automatiza ese ciclo con **agentes conversacionales a medida**:
 - Generan reportes actionables
 
 **Resultado esperado:**
-- Volumen: 75 llamadas/día → 2.400 llamadas/día (caso Riwi/Sofia)
+- Volumen: 75 llamadas/día → 2.400 llamadas/día (caso Riwi/Sofía)
 - Costo: Reducción operativa de ~86%
 - Eficiencia: Automatización del 95% de intentos, con escalada humana estratégica
 
@@ -210,8 +210,8 @@ Promise cuenta una historia de **"tiempo humano recuperado"** a través de:
    - **Insight:** "Para llegar a las personas que importan, primero hay que pasar por todas las demás"
    - Laura representa el problema que Promise resuelve
 
-2. **Caso de Éxito - SofIA (Riwi)**
-   - Nombre: SofIA (con énfasis en "IA")
+2. **Caso de Éxito - Sofía (Riwi)**
+   - Nombre: Sofía (con énfasis en "IA")
    - Contexto: Empresa Riwi, Medellín
    - Métrica: 75 llamadas/día → 2.400 llamadas/día
    - Resultado: Reducción de costo operativo del 86%
@@ -340,7 +340,7 @@ Promise cuenta una historia de **"tiempo humano recuperado"** a través de:
 ### Contexto para Generación de Contenido
 
 **Si un LLM genera:**
-- **Textos de marketing:** Usa la narrativa de Laura y SofIA como anclaje. Enfatiza "tiempo recuperado" no "automatización fría".
+- **Textos de marketing:** Usa la narrativa de Laura y Sofía como anclaje. Enfatiza "tiempo recuperado" no "automatización fría".
 - **Descripciones de producto:** Describe qué **puede hacer** el agente, no la tecnología detrás. Pivota siempre a: "¿Qué gana tu equipo?"
 - **CTAs:** Nunca "Compra ahora". Usa "Agendar diagnóstico", "Hablar con Promise", "Explorar cómo podemos ayudarte".
 - **UI/UX copy:** Mantén brevedad extrema. Una acción = una frase clara.
@@ -372,7 +372,7 @@ Promise cuenta una historia de **"tiempo humano recuperado"** a través de:
 5. **Siempre hacer:**
    - ✅ Conectar con el resultado (tiempo, dinero, energía recuperada)
    - ✅ Reconocer que es **a medida**, no estándar
-   - ✅ Mencionar Riwi o SofIA como proof of concept
+   - ✅ Mencionar Riwi o Sofía como proof of concept
    - ✅ Ofrecer una llamada a diagnóstico sin costo
 
 ### Metadata para Agentes IA
@@ -402,7 +402,7 @@ Arquitectura híbrida conversacional aplicada: agentes IA a medida que automatiz
 Paleta cálida (reds + gold) en modo claro + oscuro, tipografía mono/sans elegante, gradientes suaves, sin frialdad.
 
 **Narrativa en 1 línea:**
-Laura hace 75 llamadas al día; SofIA hace 2.400; el costo cae 86%; el equipo respira.
+Laura hace 75 llamadas al día; Sofía hace 2.400; el costo cae 86%; el equipo respira.
 
 **Para LLMs:**
 Siempre humanidad primero, siempre solución a medida, siempre Riwi como proof, nunca jerga técnica innecesaria.
