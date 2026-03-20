@@ -573,7 +573,46 @@ export function initPromiseVoiceWidget(userConfig = {}) {
 
   tabs.addEventListener("click", async (e) => {
     const btn = e.target.closest("[data-mode]");
-    if (btn) await changeMode(btn.dataset.mode);
+    if (btn) {
+      if (btn.dataset.mode === "voice") {
+        let overlayMsg = panel.querySelector(".voice-demo-msg");
+        if (!overlayMsg) {
+          overlayMsg = document.createElement("div");
+          overlayMsg.className = "voice-demo-msg";
+          overlayMsg.textContent = "Después de nuestra demo, podrás hablar con Promi";
+          Object.assign(overlayMsg.style, {
+            position: "absolute",
+            top: "5rem",
+            left: "50%",
+            transform: "translateX(-50%)",
+            background: "var(--color-surface, #fff)",
+            color: "var(--color-text, #000)",
+            border: "1px solid var(--color-outline, #ddd)",
+            padding: "0.6rem 1rem",
+            borderRadius: "6px",
+            fontSize: "0.85rem",
+            fontWeight: "500",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+            zIndex: 999,
+            textAlign: "center",
+            width: "max-content",
+            maxWidth: "90%",
+            opacity: "0",
+            transition: "opacity 0.3s ease"
+          });
+          panel.appendChild(overlayMsg);
+          // force reflow
+          void overlayMsg.offsetWidth;
+        }
+        overlayMsg.style.opacity = "1";
+        clearTimeout(overlayMsg.hideTimeout);
+        overlayMsg.hideTimeout = setTimeout(() => {
+          overlayMsg.style.opacity = "0";
+        }, 3000);
+        return;
+      }
+      await changeMode(btn.dataset.mode);
+    }
   });
 
   btnStartText.addEventListener("click",  () => startConversation("text"));
