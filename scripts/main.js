@@ -1,7 +1,7 @@
 import { initRevealAnimations } from "./ui/reveal.js";
 import { initPromiseVoiceWidget } from "./ui/widget.js";
 
-const PROMISE_ELEVENLABS_AGENT_ID = "agent_4501kksmbgj2fwnrzpkzjdk06bej";
+const PROMISE_ELEVENLABS_AGENT_ID = "agent_2601km5p9mtqfbbtx2vnzb445jkg";
 const THEME_KEY = "promise-theme";
 
 function initNavigation() {
