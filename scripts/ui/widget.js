@@ -582,7 +582,7 @@ export function initPromiseVoiceWidget(userConfig = {}) {
           overlayMsg.textContent = "Después de nuestra demo, podrás hablar con Promi";
           Object.assign(overlayMsg.style, {
             position: "absolute",
-            top: "5rem",
+            top: "8.5rem",
             left: "50%",
             transform: "translateX(-50%)",
             background: "var(--color-surface, #fff)",
